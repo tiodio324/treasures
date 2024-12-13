@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Сокровища</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgb(1, 1, 207);
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Сокровища - Игра!</h1>
+    <table id="gameBoard"></table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const m = 10;
+            const n = 10;
+            let treasureRow = Math.floor(Math.random() * m);
+            let treasureCol = Math.floor(Math.random() * n);
+
+            let gameBoard = document.getElementById("gameBoard");
+
+            for (let i = 0; i < m; i++) {
+                let row = gameBoard.insertRow(i);
+                for (let j = 0; j < n; j++) {
+                    let cell = row.insertCell(j);
+                    cell.textContent = " ";
+                    cell.dataset.distance = calculateDistance(i, j, treasureRow, treasureCol);
+                    cell.addEventListener("click", function () {
+                        revealCell(cell);
+                    });
+                }
+            }
+
+            function calculateDistance(row, col, treasureRow, treasureCol) {
+                return Math.abs(row - treasureRow) + Math.abs(col - treasureCol);
+            }
+
+            function revealCell(cell) {
+                if (cell.textContent !== " ") {
+                    return;
+                }
+                let distance = cell.dataset.distance;
+                if (cell.dataset.distance === "0") {
+                    cell.textContent = "Treasure!";
+                    alert("Ты нашёл Сокровище. Поздравляю!")
+                } else {
+                    cell.textContent = distance;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
